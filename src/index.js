@@ -100,12 +100,6 @@ app.put("/api/persons/:id", (req, res) => {
     });
   }
 
-  if (persons.find((person) => person.name === data.name)) {
-    return res.status(400).json({
-      error: "name must be unique",
-    });
-  }
-
   const id = parseInt(req.params.id);
 
   const newPerson = {
