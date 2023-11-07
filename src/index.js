@@ -1,15 +1,19 @@
 const express = require("express");
 const app = express();
-let morgan = require('morgan')
-const cors = require('cors')
+let morgan = require("morgan");
+const cors = require("cors");
 
 app.use(express.json());
-app.use(cors())
-app.use(express.static('dist'))
+app.use(cors());
+app.use(express.static("dist"));
 
-morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
+morgan.token("body", function (req, res) {
+  return JSON.stringify(req.body);
+});
 
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body'))
+app.use(
+  morgan(":method :url :status :response-time ms - :res[content-length] :body")
+);
 
 let persons = [
   {
@@ -61,8 +65,8 @@ app.post("/api/persons", (req, res) => {
 
   if (persons.find((person) => person.name === data.name)) {
     return res.status(400).json({
-        error: "name must be unique",
-      });
+      error: "name must be unique",
+    });
   }
 
   const newPerson = {
@@ -85,6 +89,41 @@ app.get("/api/persons/:id", (req, res) => {
   } else {
     res.status(404).end();
   }
+});
+
+app.put("/api/persons/:id", (req, res) => {
+  const data = req.body;
+
+  if (!data.number) {
+    return res.status(400).json({
+      error: "number missing",
+    });
+  }
+
+  if (persons.find((person) => person.name === data.name)) {
+    return res.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
+  const id = parseInt(req.params.id);
+
+  const newPerson = {
+    id: id,
+    name: data.name,
+    number: data.number,
+  };
+  const person = persons.find((person) => person.id === id);
+
+  if (person) {
+    persons = persons.map((person) =>
+      person.id !== foundPerson.id ? person : response.data
+    );
+  } else {
+    res.status(404).end();
+  }
+
+  res.json(newPerson);
 });
 
 app.delete("/api/persons/:id", (req, res) => {
