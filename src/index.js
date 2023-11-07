@@ -111,7 +111,7 @@ app.put("/api/persons/:id", (req, res) => {
 
   if (person) {
     persons = persons.map((person) =>
-      person.id !== foundPerson.id ? person : response.data
+      person.id !== newPerson.id ? person : newPerson
     );
   } else {
     res.status(404).end();
