@@ -26,6 +26,7 @@ const personSchema = new mongoose.Schema({
       validator: function (v) {
         return /^\d{2,3}-\d+$/.test(v);
       },
+      message: props => `${props.value} is not in the format 11-111... or 111-1111... `
     },
     minLength: 9,
     required: true,
